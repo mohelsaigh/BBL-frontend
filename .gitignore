@@ -1,0 +1,9 @@
+node_modules/
+bin/
+obj/
+.vs/
+dist/
+*.user
+.env
+tailadmin-free-tailwind-dashboard-template/
+tailadmin-react-free/
