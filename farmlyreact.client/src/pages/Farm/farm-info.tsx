@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ViewFarmInfoIcon, PlusIcon, CloseIcon } from "../../icons";
+import { PlusIcon, CloseIcon, FarmIcon } from "../../icons";
 
 type Farm = {
     id: string;
@@ -7,7 +7,6 @@ type Farm = {
     address: string;
     employees: number;
     admin: string;
-    status: "Healthy" | "Warning" | "Critical";
 };
 
 const initialFarms: Farm[] = [
@@ -17,15 +16,10 @@ const initialFarms: Farm[] = [
         address: "14 Riverbend Rd, Phoenix, AZ",
         employees: 12,
         admin: "Musharof Chowdhury",
-        status: "Healthy",
+       
     },
 ];
 
-const statusColor: Record<Farm["status"], string> = {
-    Healthy: "#8fd17a",
-    Warning: "#e6b34d",
-    Critical: "#e36a6a",
-};
 
 export default function FarmInfo() {
     const [farms, setFarms] = useState<Farm[]>(initialFarms);
@@ -33,6 +27,8 @@ export default function FarmInfo() {
     const [isEditing, setIsEditing] = useState(false);
     const [confirmingDelete, setConfirmingDelete] = useState(false);
     const [draft, setDraft] = useState<Farm | null>(null);
+    const [isAddingFarm, setIsAddingFarm] = useState(false); 
+
 
     const selectedFarm = farms.find((f) => f.id === selectedId) || null;
 
@@ -61,20 +57,16 @@ export default function FarmInfo() {
         setFarms((prev) => prev.filter((f) => f.id !== selectedFarm.id));
         closeModal();
     };
+    const [newFarm, setNewFarm] = useState({
+        name: "",
+        address: "",
+        employees: "",
+        admin: "",
+    });
 
     return (
-        <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-[#eef1e6] p-10 dark:border-gray-800">
-            {/* faded background texture */}
-            <div
-                className="absolute inset-0 opacity-[0.12]"
-                style={{
-                    backgroundImage:
-                        "url('/images/pexels-nc-farm-bureau-mark-20339265.jpg')",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            />
-
+       <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-[#eef1e6] p-10 dark:border-gray-800">
+      
             <div className="relative text-center">
                 <h2 className="mb-1 text-lg font-medium text-gray-800">
                     Your farms
@@ -91,16 +83,9 @@ export default function FarmInfo() {
                             className="flex flex-col items-center gap-2.5"
                         >
                             <div className="relative flex h-[104px] w-[104px] flex-col items-center justify-center rounded-[20px] bg-brand-500 shadow-lg shadow-brand-500/25">
-                                <ViewFarmInfoIcon className="h-10 w-10 text-[#f4ead9]" />
-                                <div className="mt-1.5 flex items-center gap-1.5">
-                                    <span
-                                        className="inline-block h-1.5 w-1.5 rounded-full"
-                                        style={{ backgroundColor: statusColor[farm.status] }}
-                                    />
-                                    <span className="text-[10px] text-[#f4ead9]">
-                                        {farm.status}
-                                    </span>
-                                </div>
+                                <FarmIcon className="h-10 w-10 text-[#f4ead9]" />
+
+                                
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-800">
@@ -113,7 +98,10 @@ export default function FarmInfo() {
                         </button>
                     ))}
 
-                    <button className="flex flex-col items-center gap-2.5">
+                    <button
+                        onClick={() => setIsAddingFarm(true)}
+                        className="flex flex-col items-center gap-2.5"
+                    >
                         <div className="flex h-[104px] w-[104px] items-center justify-center rounded-[20px] border-2 border-dashed border-gray-300 bg-white/40">
                             <PlusIcon className="h-7 w-7 text-gray-400" />
                         </div>
@@ -135,7 +123,7 @@ export default function FarmInfo() {
 
                         <div className="mb-5 flex items-center gap-3">
                             <div className="flex h-[52px] w-[52px] items-center justify-center rounded-xl bg-brand-500">
-                                <ViewFarmInfoIcon className="h-7 w-7 text-[#f4ead9]" />
+                                <FarmIcon className="h-7 w-7 text-[#f4ead9]" />
                             </div>
                             <p className="text-base font-medium text-gray-800">
                                 {selectedFarm.name}
@@ -238,9 +226,100 @@ export default function FarmInfo() {
                     </div>
                 </div>
             )}
+            {isAddingFarm && (
+  <div className="fixed inset-0 z-99999 flex items-center justify-center bg-black/45 px-4">
+    <div className="relative w-full max-w-sm rounded-2xl bg-white p-7">
+      <button
+        onClick={() => {
+          setIsAddingFarm(false);
+          setNewFarm({ name: "", address: "", employees: "", admin: "" });
+        }}
+        className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200"
+      >
+        <CloseIcon className="h-3.5 w-3.5" />
+      </button>
+
+      <p className="mb-5 text-base font-medium text-gray-800">
+        Add a new farm
+      </p>
+
+      <div className="space-y-3 border-t border-gray-100 pt-4 text-sm">
+        <div>
+          <label className="mb-1 block text-gray-500">Farm name</label>
+          <input
+            value={newFarm.name}
+            onChange={(e) => setNewFarm({ ...newFarm, name: e.target.value })}
+            className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-800 outline-none focus:border-brand-500"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-gray-500">Address</label>
+          <input
+            value={newFarm.address}
+            onChange={(e) => setNewFarm({ ...newFarm, address: e.target.value })}
+            className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-800 outline-none focus:border-brand-500"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-gray-500">Employees</label>
+          <input
+            value={newFarm.employees}
+            onChange={(e) => setNewFarm({ ...newFarm, employees: e.target.value })}
+            className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-800 outline-none focus:border-brand-500"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-gray-500">Farm admin</label>
+          <input
+            value={newFarm.admin}
+            onChange={(e) => setNewFarm({ ...newFarm, admin: e.target.value })}
+            className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-800 outline-none focus:border-brand-500"
+          />
+        </div>
+      </div>
+
+      <div className="mt-5 flex gap-2.5">
+        <button
+          onClick={() => {
+            if (!newFarm.name.trim()) return;
+            setFarms((prev) => [
+              ...prev,
+              {
+                id: Date.now().toString(),
+                name: newFarm.name,
+                address: newFarm.address,
+                employees: Number(newFarm.employees) || 0,
+                admin: newFarm.admin,
+                status: "Healthy",
+              },
+            ]);
+            setIsAddingFarm(false);
+            setNewFarm({ name: "", address: "", employees: "", admin: "" });
+          }}
+          className="flex-1 rounded-lg bg-brand-500 py-2.5 text-sm font-medium text-[#f4ead9] hover:bg-brand-600"
+        >
+          Add farm
+        </button>
+        <button
+          onClick={() => {
+            setIsAddingFarm(false);
+            setNewFarm({ name: "", address: "", employees: "", admin: "" });
+          }}
+          className="flex-1 rounded-lg bg-gray-100 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
         </div>
     );
+
+
 }
+
+
 
 function FieldRow({
     label,

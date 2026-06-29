@@ -55,6 +55,7 @@ import { ReactComponent as MoreDotIcon } from "./moredot.svg?react";
 import { ReactComponent as AlertHexaIcon } from "./alert-hexa.svg?react";
 import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
 import { ReactComponent as ViewFarmInfoIcon } from "./farm-info.svg?react";
+import { ReactComponent as FarmIcon } from "./farm-info_1.svg?react";
 export {
   ErrorHexaIcon,
   AlertHexaIcon,
@@ -113,4 +114,5 @@ export {
   AngleLeftIcon,
     AngleRightIcon,
     ViewFarmInfoIcon,
+    FarmIcon,
 };
