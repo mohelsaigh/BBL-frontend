@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router";
 import {
     ChatIcon,
   ChevronDownIcon,
+  FarmIcon,
   GridIcon,
   HorizontaLDots,
   PlugInIcon,
@@ -49,6 +50,11 @@ const navItems: NavItem[] = [
         path: "/moderate-chat",
     },
 
+    {
+        icon: <FarmIcon />,
+        name: "Farm Admin",
+        path: "/farm-admin/dashboard",
+    },
 
  /* {
     icon: <UserCircleIcon />,

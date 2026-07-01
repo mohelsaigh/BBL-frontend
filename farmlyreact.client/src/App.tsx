@@ -21,6 +21,13 @@ import Home from "./pages/Dashboard/Home";
 import FarmInfo from "./pages/Farm/farm-info.tsx";
 import AdminModerator from "./pages/UserManagement/AdminModerator";
 import ModerationChat from "./pages/ModerationChat"; 
+import FarmAdminLayout from "./layout/FarmAdminLayout";
+import FarmAdminDashboard from "./pages/FarmAdmin/FarmAdminDashboard";
+import FarmAdminUserManagement from "./pages/FarmAdmin/FarmAdminUserManagement";
+import FarmAdminEquipment from "./pages/FarmAdmin/FarmAdminEquipment";
+import FarmAdminFinancial from "./pages/FarmAdmin/FarmAdminFinancial";
+import FarmAdminAquaponics from "./pages/FarmAdmin/FarmAdminAquaponics";
+
 
 export default function App() {
     return (
@@ -28,42 +35,49 @@ export default function App() {
             <Router>
                 <ScrollToTop />
                 <Routes>
-                    {/* Dashboard Layout */}
+                    {/* Main admin layout */}
                     <Route element={<AppLayout />}>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/farm-info" element={<FarmInfo />} />
+                        <Route path="/user-management" element={<AdminModerator />} />
                         <Route path="/moderate-chat" element={<ModerationChat />} />
                         <Route path="/chat-moderation/:moderatorId" element={<Blank />} />
-                        <Route path="/user-management" element={<AdminModerator />} />
-                        <Route index path="/" element={<Home />} />
-                        <Route path="/farm-info" element={<FarmInfo />} />
-                        {/* Others Page */}
                         <Route path="/profile" element={<UserProfiles />} />
                         <Route path="/calendar" element={<Calendar />} />
                         <Route path="/blank" element={<Blank />} />
-
-                        {/* Forms */}
                         <Route path="/form-elements" element={<FormElements />} />
-
-                        {/* Tables */}
                         <Route path="/basic-tables" element={<BasicTables />} />
-
-                        {/* Ui Elements */}
                         <Route path="/alerts" element={<Alerts />} />
                         <Route path="/avatars" element={<Avatars />} />
                         <Route path="/badge" element={<Badges />} />
                         <Route path="/buttons" element={<Buttons />} />
                         <Route path="/images" element={<Images />} />
                         <Route path="/videos" element={<Videos />} />
-
-                        {/* Charts */}
                         <Route path="/line-chart" element={<LineChart />} />
                         <Route path="/bar-chart" element={<BarChart />} />
                     </Route>
 
-                    {/* Auth Layout */}
+                    {/* Farm Admin — completely separate layout, sibling NOT child */}
+                    <Route element={<FarmAdminLayout />}>
+                        <Route path="/farm-admin/dashboard" element={<FarmAdminDashboard />} />
+                        <Route path="/farm-admin/user-management" element={<FarmAdminUserManagement />} />
+                        <Route path="/farm-admin/user-management/employees" element={<FarmAdminUserManagement />} />
+                        <Route path="/farm-admin/user-management/tasks" element={<FarmAdminUserManagement />} />
+                        <Route path="/farm-admin/user-management/work-groups" element={<FarmAdminUserManagement />} />
+                        <Route path="/farm-admin/equipment" element={<FarmAdminEquipment />} />
+                        <Route path="/farm-admin/financial" element={<FarmAdminFinancial />} />
+                        <Route path="/farm-admin/financial/wages" element={<FarmAdminFinancial />} />
+                        <Route path="/farm-admin/financial/income" element={<FarmAdminFinancial />} />
+                        <Route path="/farm-admin/financial/water" element={<FarmAdminFinancial />} />
+                        <Route path="/farm-admin/financial/invoices" element={<FarmAdminFinancial />} />
+                        <Route path="/farm-admin/aquaponics" element={<FarmAdminAquaponics />} />
+                    </Route>
+
+                    {/* Auth pages */}
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
 
-                    {/* Fallback Route */}
+                    {/* 404 */}
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>
